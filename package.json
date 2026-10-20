@@ -1,8 +1,0 @@
-{
-  "name": "gaming-banner-studio",
-  "version": "1.0.0",
-  "description": "ساخت پروفایل و بنر گیمینگ با انتخاب فونت و رنگ، اسم و آیدی و دانلود PNG",
-  "main": "server.js",
-  "scripts": { "start": "node server.js" },
-  "license": "MIT"
-}
