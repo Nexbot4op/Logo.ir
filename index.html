@@ -1,0 +1,1251 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>استودیو بنر گیمینگ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Audiowide&family=Black+Ops+One&family=Bungee&family=Lalezar&family=Orbitron:wght@700;900&family=Press+Start+2P&family=Rajdhani:wght@700&family=Reem+Kufi:wght@700&family=Russo+One&family=Vazirmatn:wght@400;600;800&display=swap">
+<style>
+/* Layout: one dark neon page with two views. Home = hero with live mockup, services, steps, templates, FAQ. Studio = controls column + sticky live canvas; on phones the canvas sticks on top and the download button sits in a fixed bottom bar. */
+:root {
+  --bg: #0b0d16;
+  --panel: #12162a;
+  --panel-2: #1a2040;
+  --line: #2a3158;
+  --fg: #eef0ff;
+  --mute: #9aa1c7;
+  --accent: #7c5cff;
+  --accent-2: #ff4d8d;
+  --font-ui: "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
+  --font-display: "Lalezar", "Vazirmatn", Tahoma, sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-ui);
+  font-size: 15px;
+  line-height: 1.7;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--bg); }
+.site { max-width: 1180px; margin-inline: auto; padding-block: 0 40px; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+h1, h2, h3, p { margin: 0; }
+.grad { background: linear-gradient(90deg, var(--accent), var(--accent-2)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+/* buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 10px 22px; border-radius: 12px; border: 0; font-weight: 800; font-size: 15px; color: #fff; background: linear-gradient(90deg, var(--accent), var(--accent-2)); }
+.btn:hover { filter: brightness(1.12); }
+.btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--fg); font-weight: 600; }
+.btn-ghost:hover { border-color: var(--mute); filter: none; }
+.btn-sm { min-height: 40px; padding: 6px 16px; font-size: 14px; }
+
+/* nav */
+.nav { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding-block: 12px; background: var(--bg); border-bottom: 1px solid var(--line); }
+.brand { display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; font-family: var(--font-display); font-size: 22px; line-height: 1; }
+.brand svg { width: 30px; height: 30px; flex: none; }
+.nav-links { display: flex; align-items: center; gap: 4px; }
+.nav-links button { background: none; border: 0; padding: 8px 12px; color: var(--mute); font-size: 14px; font-weight: 600; border-radius: 8px; }
+.nav-links button:hover { color: var(--fg); }
+.nav-end { display: flex; align-items: center; gap: 8px; }
+@media (max-width: 760px) { .nav-links { display: none; } .brand { font-size: 19px; } }
+
+/* hero */
+.hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); gap: 40px; align-items: center; padding-block: 48px 40px; }
+.hero h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.3rem, 6vw, 3.9rem); line-height: 1.25; text-wrap: balance; }
+.hero p.lead { margin-top: 16px; color: var(--mute); font-size: 17px; max-width: 46ch; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 26px; }
+.chips-row { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; padding: 0; list-style: none; }
+.chips-row li { font-size: 13px; padding: 4px 12px; border: 1px solid var(--line); border-radius: 99px; color: var(--mute); }
+.mock { position: relative; width: 100%; max-width: 640px; aspect-ratio: 1 / 0.9; margin-inline: auto; }
+.mock canvas { position: absolute; height: auto; display: block; transition: opacity .25s; }
+.mock canvas.swap { opacity: 0; }
+.m-banner { top: 0; inset-inline: 0; width: 100%; border-radius: 14px; border: 1px solid var(--line); }
+.m-profile { top: 50%; inset-inline-end: 8%; width: 28%; border-radius: 50%; border: 4px solid var(--bg); box-shadow: 0 0 0 1px var(--line); }
+.m-logo { top: 54%; inset-inline-start: 4%; width: 32%; border-radius: 16px; border: 1px solid var(--line); }
+@media (max-width: 880px) { .hero { grid-template-columns: minmax(0, 1fr); gap: 28px; padding-block: 32px 24px; } }
+
+/* sections */
+.sec { padding-block: 48px; }
+.sec-head { display: grid; gap: 8px; margin-bottom: 28px; }
+.sec-head h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.3; text-wrap: balance; }
+.sec-head p { color: var(--mute); max-width: 56ch; }
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 16px; display: grid; grid-template-rows: auto auto 1fr auto; gap: 10px; min-width: 0; }
+.card .pv { aspect-ratio: 4 / 3; background: var(--panel-2); border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+.card .pv canvas { display: block; height: auto; border-radius: 8px; }
+.card .pv.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; padding: 10px; align-content: center; }
+.card .pv.grid2 canvas { width: 100%; }
+.card h3 { font-size: 17px; font-weight: 800; }
+.card p { color: var(--mute); font-size: 14px; }
+.card .btn { justify-self: start; }
+.steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; padding: 0; margin: 0; list-style: none; counter-reset: s; }
+.steps li { border-top: 2px solid var(--line); padding-top: 16px; display: grid; gap: 6px; align-content: start; }
+.steps .n { font-family: var(--font-display); font-size: 40px; line-height: 1; color: var(--accent-2); }
+.steps h3 { font-size: 17px; font-weight: 800; }
+.steps p { color: var(--mute); font-size: 14px; }
+@media (max-width: 700px) { .steps { grid-template-columns: minmax(0, 1fr); } }
+.tgrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
+@media (max-width: 700px) { .tgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+.tbtn { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 8px; display: grid; gap: 6px; text-align: center; min-width: 0; }
+.tbtn:hover { border-color: var(--mute); }
+.tbtn canvas { width: 100%; height: auto; display: block; border-radius: 8px; }
+.tbtn span { font-size: 13px; font-weight: 600; color: var(--mute); }
+.tbtn[aria-pressed="true"] { border-color: var(--accent); background: var(--panel-2); }
+.tbtn[aria-pressed="true"] span { color: var(--fg); }
+.sizes { display: flex; flex-wrap: wrap; gap: 10px; padding: 0; margin: 0; list-style: none; }
+.sizes li { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 10px 16px; display: grid; gap: 0; }
+.sizes b { font-size: 14px; }
+.sizes small { color: var(--mute); direction: ltr; text-align: start; font-size: 13px; }
+.faq { display: grid; gap: 10px; max-width: 760px; }
+.faq details { background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 4px 16px; }
+.faq summary { cursor: pointer; padding: 12px 0; font-weight: 600; list-style-position: inside; }
+.faq details p { color: var(--mute); padding-bottom: 14px; font-size: 14.5px; }
+.cta { background: linear-gradient(120deg, rgba(124,92,255,.28), rgba(255,77,141,.22)), var(--panel); border: 1px solid var(--line); border-radius: 20px; padding: clamp(24px, 5vw, 48px); display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px; }
+.cta h2 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.6rem, 4vw, 2.2rem); line-height: 1.3; text-wrap: balance; }
+.cta p { color: var(--mute); margin-top: 4px; }
+.foot { border-top: 1px solid var(--line); margin-top: 40px; padding-top: 20px; color: var(--mute); font-size: 13px; display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+
+/* studio */
+.studio-head { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; padding-block: 20px 16px; }
+.studio-head h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem, 4vw, 2.2rem); line-height: 1.2; }
+.studio { display: grid; grid-template-columns: minmax(0, 420px) minmax(0, 1fr); gap: 24px; align-items: start; }
+.controls { background: var(--panel); border: 1px solid var(--line); border-radius: 16px; padding: 4px 18px; min-width: 0; }
+.group { padding-block: 18px; display: grid; gap: 12px; }
+.group + .group { border-top: 1px solid var(--line); }
+.group > h2 { font-size: 13px; font-weight: 600; letter-spacing: .02em; color: var(--mute); }
+.seg { display: grid; grid-auto-flow: column; grid-auto-columns: 1fr; gap: 4px; background: var(--bg); padding: 4px; border-radius: 12px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.opt { position: relative; display: block; }
+.opt input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; width: 100%; height: 100%; }
+.opt span { display: flex; align-items: center; justify-content: center; min-height: 40px; padding: 6px 12px; text-align: center; border-radius: 9px; color: var(--mute); font-weight: 600; font-size: 14px; border: 1px solid transparent; transition: background .15s, color .15s; }
+.opt:hover span { color: var(--fg); }
+.opt:has(input:checked) span { background: var(--accent); color: #fff; }
+.chips .opt span { background: var(--bg); border-color: var(--line); padding: 6px 14px; }
+.chips .opt:has(input:checked) span { background: var(--panel-2); border-color: var(--accent); color: var(--fg); }
+.opt:has(input:focus-visible) span { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.stack { display: grid; gap: 8px; }
+.stack .opt span { justify-content: flex-start; text-align: start; background: var(--bg); border-color: var(--line); }
+.stack .opt:has(input:checked) span { background: var(--panel-2); border-color: var(--accent); color: var(--fg); }
+label.field { display: grid; gap: 6px; font-size: 13px; color: var(--mute); }
+input[type="text"] { width: 100%; min-height: 44px; background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; font: inherit; font-size: 16px; }
+input[type="text"]:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 1px; border-color: transparent; }
+input.ltr { direction: ltr; text-align: left; }
+.row { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.filebtn { position: relative; display: inline-flex; align-items: center; min-height: 44px; background: var(--panel-2); border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; font-weight: 600; font-size: 14px; }
+.filebtn input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; }
+.filebtn:focus-within { outline: 2px solid var(--accent-2); outline-offset: 2px; }
+.ghost { min-height: 44px; background: transparent; border: 1px solid var(--line); border-radius: 10px; padding: 8px 14px; color: var(--mute); font-size: 14px; }
+.ghost:hover { color: var(--fg); border-color: var(--mute); }
+.note { font-size: 12.5px; color: var(--mute); }
+.fonts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.fontbtn { background: var(--bg); border: 1px solid var(--line); border-radius: 12px; padding: 10px 12px; text-align: start; display: grid; gap: 2px; min-width: 0; }
+.fontbtn:hover { border-color: var(--mute); }
+.fontbtn[aria-pressed="true"] { border-color: var(--accent); background: var(--panel-2); }
+.fontbtn .sample { font-size: 22px; line-height: 1.3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; direction: ltr; text-align: start; }
+.fontbtn .fname { font-size: 12px; color: var(--mute); display: flex; justify-content: space-between; gap: 6px; }
+.fontbtn .fa { color: var(--accent-2); font-weight: 600; }
+.presets { display: flex; flex-wrap: wrap; gap: 10px; }
+.swatch { width: 46px; height: 46px; border-radius: 50%; border: 2px solid var(--line); padding: 0; }
+.swatch[aria-pressed="true"] { border-color: #fff; box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent); }
+.colors { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.colors label { display: grid; gap: 4px; font-size: 12.5px; color: var(--mute); }
+input[type="color"] { width: 100%; height: 44px; padding: 3px; background: var(--bg); border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
+.check { display: flex; align-items: center; gap: 10px; font-size: 14px; cursor: pointer; min-height: 36px; }
+.check input { width: 20px; height: 20px; accent-color: var(--accent); }
+.tpl-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+
+.stage { min-width: 0; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 12px); display: grid; gap: 14px; }
+.canvas-wrap { margin-inline: auto; width: 100%; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 10px; }
+.canvas-wrap[data-wide="0"] { max-width: 560px; }
+.canvas-wrap.checker canvas { background: repeating-conic-gradient(#2b2f4a 0 25%, #1a1d33 0 50%) 0 0 / 20px 20px; }
+canvas { display: block; width: 100%; height: auto; border-radius: 8px; }
+.actions { display: grid; gap: 6px; width: 100%; max-width: 560px; margin-inline: auto; }
+.canvas-wrap[data-wide="1"] ~ .actions { max-width: none; }
+.dl { background: linear-gradient(90deg, var(--accent), var(--accent-2)); color: #fff; border: 0; border-radius: 12px; min-height: 52px; padding: 12px 18px; font-weight: 800; font-size: 16px; }
+.dl:hover { filter: brightness(1.1); }
+.dl[disabled] { opacity: .6; cursor: progress; }
+#status { min-height: 1.5em; text-align: center; font-size: 13px; color: var(--mute); }
+.manual { background: none; border: 0; color: var(--mute); font-size: 12.5px; text-decoration: underline; justify-self: center; padding: 2px 8px; }
+#fallback img { border-radius: 8px; width: 100%; height: auto; display: block; background: var(--bg); }
+
+@media (max-width: 880px) {
+  .studio { grid-template-columns: minmax(0, 1fr); gap: 16px; }
+  .stage { order: -1; top: env(safe-area-inset-top, 0px); z-index: 12; background: var(--bg); padding-block: 8px; gap: 0; }
+  .canvas-wrap { padding: 6px; }
+  .canvas-wrap canvas { width: auto; max-width: 100%; max-height: 34vh; margin-inline: auto; }
+  .actions { position: fixed; inset: auto 0 0 0; z-index: 25; max-width: none; margin: 0; background: var(--bg); border-top: 1px solid var(--line); padding: 10px max(16px, env(safe-area-inset-left, 0px)) calc(8px + env(safe-area-inset-bottom, 0px)); gap: 2px; }
+  .actions .manual { padding: 0 8px; }
+  #status { min-height: 1.2em; }
+  .site.in-studio { padding-bottom: 130px; }
+  .site.in-studio .nav { position: static; }
+  .fonts { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } html { scroll-behavior: auto; } }
+</style>
+
+</head>
+<body>
+<div class="site" id="site" dir="rtl" lang="fa">
+  <header class="nav">
+    <button type="button" class="brand" data-go="home" aria-label="صفحه اصلی">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><defs><linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7c5cff"/><stop offset="1" stop-color="#ff4d8d"/></linearGradient></defs><path d="M16 2l12 7v14l-12 7L4 23V9z" fill="url(#bg1)"/><path d="M17.5 8l-6 9h4l-1 7 6-9h-4z" fill="#0b0d16"/></svg>
+      <span>استودیو بنر</span>
+    </button>
+    <nav class="nav-links" aria-label="بخش‌های صفحه">
+      <button type="button" data-scroll="services">خدمات</button>
+      <button type="button" data-scroll="how">نحوه کار</button>
+      <button type="button" data-scroll="templates">قالب‌ها</button>
+      <button type="button" data-scroll="faq">سوالات</button>
+    </nav>
+    <div class="nav-end">
+      <button type="button" class="btn btn-sm" data-start="profile" id="nav-cta">شروع ساخت</button>
+    </div>
+  </header>
+
+  <!-- ============ HOME ============ -->
+  <div id="view-home">
+    <section class="hero" aria-labelledby="h1">
+      <div>
+        <h1 id="h1">لوگو، پروفایل و بنر گیمینگ خودت را <span class="grad">همین الان</span> بساز</h1>
+        <p class="lead">قالب را انتخاب کن، اسم و آیدی‌ات را بنویس و تصویر آماده را دانلود کن. بدون ثبت‌نام و بدون نصب برنامه.</p>
+        <div class="hero-cta">
+          <button type="button" class="btn" data-start="profile">شروع ساخت</button>
+          <button type="button" class="btn btn-ghost" data-scroll="templates">دیدن قالب‌ها</button>
+        </div>
+        <ul class="chips-row">
+          <li>فونت فارسی</li>
+          <li>PNG با کیفیت کامل</li>
+          <li>مناسب گوشی</li>
+          <li>۸ قالب آماده</li>
+        </ul>
+      </div>
+      <div class="mock" aria-label="نمونه‌ای از بنر، پروفایل و لوگوی ساخته‌شده">
+        <canvas class="m-banner" id="m-banner" width="800" height="450" aria-hidden="true"></canvas>
+        <canvas class="m-profile" id="m-profile" width="400" height="400" aria-hidden="true"></canvas>
+        <canvas class="m-logo" id="m-logo" width="400" height="400" aria-hidden="true"></canvas>
+      </div>
+    </section>
+
+    <section class="sec" id="services" aria-labelledby="t-services">
+      <div class="sec-head">
+        <h2 id="t-services">چه چیزی می‌سازی؟</h2>
+        <p>چهار ابزار در یک جا. هر کدام با همان فونت و رنگ‌هایی که انتخاب می‌کنی.</p>
+      </div>
+      <div class="cards">
+        <article class="card">
+          <div class="pv"><canvas id="sv-profile" width="360" height="360" style="width:58%" aria-hidden="true"></canvas></div>
+          <h3>پروفایل گیمینگ</h3>
+          <p>آواتار با قاب شش‌ضلعی، دایره یا مربع گرد. عکس خودت را بگذار یا از حرف اول اسمت استفاده کن.</p>
+          <button type="button" class="btn btn-ghost btn-sm" data-start="profile">ساخت پروفایل</button>
+        </article>
+        <article class="card">
+          <div class="pv"><canvas id="sv-banner" width="480" height="270" style="width:94%" aria-hidden="true"></canvas></div>
+          <h3>بنر کانال</h3>
+          <p>سه اندازه‌ی آماده و سه چیدمان برای کانال یوتیوب، کانال‌های ۱۶:۹ و هدر پهن.</p>
+          <button type="button" class="btn btn-ghost btn-sm" data-start="banner">ساخت بنر</button>
+        </article>
+        <article class="card">
+          <div class="pv"><canvas id="sv-logo" width="360" height="360" style="width:58%" aria-hidden="true"></canvas></div>
+          <h3>لوگوی اختصاصی</h3>
+          <p>نشان با پنج شکل و هشت آیکون. می‌توانی لوگو را با پس‌زمینه‌ی شفاف دانلود کنی.</p>
+          <button type="button" class="btn btn-ghost btn-sm" data-start="logo">ساخت لوگو</button>
+        </article>
+        <article class="card">
+          <div class="pv grid2">
+            <canvas id="sv-t1" width="240" height="135" aria-hidden="true"></canvas>
+            <canvas id="sv-t2" width="240" height="135" aria-hidden="true"></canvas>
+            <canvas id="sv-t3" width="240" height="135" aria-hidden="true"></canvas>
+            <canvas id="sv-t4" width="240" height="135" aria-hidden="true"></canvas>
+          </div>
+          <h3>قالب‌های آماده</h3>
+          <p>با یک کلیک فونت، رنگ، الگو و قاب یک قالب را اعمال کن و بعد هر چیزی را عوض کن.</p>
+          <button type="button" class="btn btn-ghost btn-sm" data-scroll="templates">دیدن قالب‌ها</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="sec" id="how" aria-labelledby="t-how">
+      <div class="sec-head"><h2 id="t-how">سه قدم تا تصویر نهایی</h2></div>
+      <ol class="steps">
+        <li><span class="n">۱</span><h3>قالب را انتخاب کن</h3><p>از بین قالب‌های آماده یکی را بزن یا از صفحه‌ی خالی شروع کن.</p></li>
+        <li><span class="n">۲</span><h3>شخصی‌سازی کن</h3><p>اسم، آیدی، شعار، فونت و رنگ را بنویس و ببین. پیش‌نمایش همان لحظه عوض می‌شود.</p></li>
+        <li><span class="n">۳</span><h3>دانلود کن</h3><p>تصویر را با فرمت PNG، JPG یا WebP و اندازه‌ی کامل ذخیره کن.</p></li>
+      </ol>
+    </section>
+
+    <section class="sec" id="templates" aria-labelledby="t-tpl">
+      <div class="sec-head">
+        <h2 id="t-tpl">قالب‌های آماده</h2>
+        <p>روی هر قالب بزن تا با آن وارد استودیو شوی.</p>
+      </div>
+      <div class="tgrid" id="home-tpls"></div>
+    </section>
+
+    <section class="sec" aria-labelledby="t-sizes">
+      <div class="sec-head">
+        <h2 id="t-sizes">اندازه‌ها و فرمت‌ها</h2>
+        <p>اندازه‌ی هر تصویر روی دکمه‌ی دانلود نوشته می‌شود.</p>
+      </div>
+      <ul class="sizes">
+        <li><b>پروفایل</b><small>1080 × 1080</small></li>
+        <li><b>بنر یوتیوب</b><small>2560 × 1440</small></li>
+        <li><b>بنر ۱۶:۹</b><small>1280 × 720</small></li>
+        <li><b>هدر پهن</b><small>1500 × 500</small></li>
+        <li><b>لوگو</b><small>1080 × 1080 · 1600 × 640</small></li>
+        <li><b>فرمت</b><small>PNG · JPG · WebP</small></li>
+      </ul>
+    </section>
+
+    <section class="sec" id="faq" aria-labelledby="t-faq">
+      <div class="sec-head"><h2 id="t-faq">سوالات پرتکرار</h2></div>
+      <div class="faq">
+        <details><summary>برای استفاده باید ثبت‌نام کنم؟</summary><p>نه. صفحه را باز کن و بساز.</p></details>
+        <details><summary>عکس من آپلود می‌شود؟</summary><p>نه. عکس آواتار فقط داخل مرورگر خودت خوانده می‌شود و به جایی فرستاده نمی‌شود.</p></details>
+        <details><summary>فونت فارسی دارد؟</summary><p>بله. سه فونت فارسی در لیست هست و اسم فارسی با بقیه‌ی فونت‌ها هم نوشته می‌شود.</p></details>
+        <details><summary>کدام فرمت را انتخاب کنم؟</summary><p>PNG برای بیشترین کیفیت و لوگوی شفاف. JPG و WebP حجم کمتری دارند.</p></details>
+        <details><summary>روی گوشی هم کار می‌کند؟</summary><p>بله. پیش‌نمایش بالای صفحه می‌ماند و دکمه‌ی دانلود پایین صفحه ثابت است.</p></details>
+      </div>
+    </section>
+
+    <section class="sec">
+      <div class="cta">
+        <div><h2>آماده‌ای هویت گیمینگت را بسازی؟</h2><p>چند دقیقه کافی است.</p></div>
+        <button type="button" class="btn" data-start="profile">شروع ساخت</button>
+      </div>
+    </section>
+  </div>
+
+  <!-- ============ STUDIO ============ -->
+  <div id="view-studio" hidden>
+    <div class="studio-head">
+      <h1>استودیو</h1>
+      <button type="button" class="btn btn-ghost btn-sm" data-go="home">بازگشت به صفحه اصلی</button>
+    </div>
+    <main class="studio">
+      <section class="controls" aria-label="تنظیمات طرح">
+
+        <div class="group">
+          <h2>چه چیزی می‌سازی؟</h2>
+          <div class="seg" role="radiogroup" aria-label="نوع طرح">
+            <label class="opt"><input type="radio" name="mode" value="profile" checked><span>پروفایل</span></label>
+            <label class="opt"><input type="radio" name="mode" value="banner"><span>بنر</span></label>
+            <label class="opt"><input type="radio" name="mode" value="logo"><span>لوگو</span></label>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>قالب‌های آماده</h2>
+          <div class="tpl-grid" id="studio-tpls"></div>
+        </div>
+
+        <div class="group" data-modes="banner" hidden>
+          <h2>چیدمان و اندازه بنر</h2>
+          <div class="stack" role="radiogroup" aria-label="چیدمان">
+            <label class="opt"><input type="radio" name="layout" value="tr" checked><span>متن سمت راست، آواتار سمت چپ</span></label>
+            <label class="opt"><input type="radio" name="layout" value="tl"><span>متن سمت چپ، آواتار سمت راست</span></label>
+            <label class="opt"><input type="radio" name="layout" value="c"><span>فقط متن، وسط‌چین</span></label>
+          </div>
+          <div class="stack" role="radiogroup" aria-label="اندازه">
+            <label class="opt"><input type="radio" name="size" value="yt" checked><span>یوتیوب · 2560×1440</span></label>
+            <label class="opt"><input type="radio" name="size" value="tg"><span>کانال ۱۶:۹ · 1280×720</span></label>
+            <label class="opt"><input type="radio" name="size" value="x"><span>هدر پهن (ایکس) · 1500×500</span></label>
+          </div>
+        </div>
+
+        <div class="group" data-modes="logo" hidden>
+          <h2>نشان لوگو</h2>
+          <div class="chips" role="radiogroup" aria-label="شکل نشان">
+            <label class="opt"><input type="radio" name="emblem" value="shield" checked><span>سپر</span></label>
+            <label class="opt"><input type="radio" name="emblem" value="hex"><span>شش‌ضلعی</span></label>
+            <label class="opt"><input type="radio" name="emblem" value="circle"><span>دایره</span></label>
+            <label class="opt"><input type="radio" name="emblem" value="diamond"><span>لوزی</span></label>
+            <label class="opt"><input type="radio" name="emblem" value="badge"><span>نشان</span></label>
+          </div>
+          <div class="chips" role="radiogroup" aria-label="آیکون">
+            <label class="opt"><input type="radio" name="icon" value="letter"><span>حرف اول</span></label>
+            <label class="opt"><input type="radio" name="icon" value="bolt" checked><span>رعد</span></label>
+            <label class="opt"><input type="radio" name="icon" value="crown"><span>تاج</span></label>
+            <label class="opt"><input type="radio" name="icon" value="crosshair"><span>نشانه‌گیر</span></label>
+            <label class="opt"><input type="radio" name="icon" value="skull"><span>جمجمه</span></label>
+            <label class="opt"><input type="radio" name="icon" value="star"><span>ستاره</span></label>
+            <label class="opt"><input type="radio" name="icon" value="sword"><span>شمشیر</span></label>
+            <label class="opt"><input type="radio" name="icon" value="gem"><span>الماس</span></label>
+          </div>
+          <div class="seg" role="radiogroup" aria-label="چیدمان لوگو">
+            <label class="opt"><input type="radio" name="llay" value="stack" checked><span>عمودی</span></label>
+            <label class="opt"><input type="radio" name="llay" value="row"><span>افقی</span></label>
+            <label class="opt"><input type="radio" name="llay" value="emblem"><span>فقط نشان</span></label>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>اسم و آیدی</h2>
+          <label class="field" for="f-name">اسم نمایشی
+            <input type="text" id="f-name" maxlength="28" autocomplete="off" value="Night Wolf">
+          </label>
+          <label class="field" for="f-id" data-modes="profile banner">آیدی
+            <input type="text" id="f-id" class="ltr" maxlength="32" autocomplete="off" value="@nightwolf">
+          </label>
+          <label class="field" for="f-tag">شعار کوتاه (اختیاری)
+            <input type="text" id="f-tag" maxlength="40" autocomplete="off" value="Competitive Player">
+          </label>
+          <div data-modes="profile banner" style="display:grid;gap:8px">
+            <div class="row">
+              <label class="filebtn">انتخاب عکس آواتار<input type="file" id="f-img" accept="image/*"></label>
+              <button type="button" class="ghost" id="f-img-clear" hidden>حذف عکس</button>
+            </div>
+            <p class="note" id="img-note">بدون عکس، حرف اول اسمت داخل قاب نمایش داده می‌شود.</p>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>فونت</h2>
+          <div class="fonts" id="fonts"></div>
+        </div>
+
+        <div class="group">
+          <h2>رنگ</h2>
+          <div class="presets" id="presets"></div>
+          <div class="colors">
+            <label for="c-1">رنگ اصلی<input type="color" id="c-1" value="#7c5cff"></label>
+            <label for="c-2">رنگ دوم<input type="color" id="c-2" value="#ff4d8d"></label>
+            <label for="c-bg">پس‌زمینه<input type="color" id="c-bg" value="#0c0e17"></label>
+            <label for="c-text">رنگ متن<input type="color" id="c-text" value="#ffffff"></label>
+          </div>
+        </div>
+
+        <div class="group">
+          <h2>سبک</h2>
+          <div class="chips" role="radiogroup" aria-label="الگوی پس‌زمینه">
+            <label class="opt"><input type="radio" name="pattern" value="grid" checked><span>شبکه</span></label>
+            <label class="opt"><input type="radio" name="pattern" value="hex"><span>شش‌ضلعی</span></label>
+            <label class="opt"><input type="radio" name="pattern" value="stripes"><span>خط مورب</span></label>
+            <label class="opt"><input type="radio" name="pattern" value="dots"><span>نقطه</span></label>
+            <label class="opt"><input type="radio" name="pattern" value="scan"><span>اسکن</span></label>
+            <label class="opt"><input type="radio" name="pattern" value="none"><span>ساده</span></label>
+          </div>
+          <div class="chips" role="radiogroup" aria-label="شکل قاب" data-modes="profile banner">
+            <label class="opt"><input type="radio" name="shape" value="hex" checked><span>قاب شش‌ضلعی</span></label>
+            <label class="opt"><input type="radio" name="shape" value="circle"><span>دایره</span></label>
+            <label class="opt"><input type="radio" name="shape" value="rsq"><span>مربع گرد</span></label>
+          </div>
+          <label class="check"><input type="checkbox" id="f-glow" checked> درخشش نئونی</label>
+          <label class="check" data-modes="logo"><input type="checkbox" id="f-transp"> پس‌زمینه‌ی شفاف (برای PNG)</label>
+        </div>
+
+        <div class="group">
+          <h2>فرمت دانلود</h2>
+          <div class="seg" role="radiogroup" aria-label="فرمت">
+            <label class="opt"><input type="radio" name="fmt" value="png" checked><span>PNG</span></label>
+            <label class="opt"><input type="radio" name="fmt" value="jpeg"><span>JPG</span></label>
+            <label class="opt"><input type="radio" name="fmt" value="webp"><span>WebP</span></label>
+          </div>
+        </div>
+
+        <div class="group" id="fallback" hidden>
+          <h2>ذخیره‌ی دستی</h2>
+          <p class="note">روی تصویر نگه دار (گوشی) یا راست‌کلیک کن و «ذخیره تصویر» را بزن.</p>
+          <img id="fbimg" alt="تصویر نهایی آماده ذخیره">
+        </div>
+      </section>
+
+      <section class="stage" aria-label="پیش‌نمایش">
+        <div class="canvas-wrap" id="wrap" data-wide="0">
+          <canvas id="cv" width="1000" height="1000" role="img" aria-label="پیش‌نمایش زنده طرح"></canvas>
+        </div>
+        <div class="actions">
+          <button type="button" class="dl" id="dl">دانلود تصویر</button>
+          <div id="status" role="status" aria-live="polite"></div>
+          <button type="button" class="manual" id="manual">دانلود شروع نشد؟ ذخیره‌ی دستی</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <footer class="foot">
+    <span>استودیو بنر گیمینگ</span>
+    <span>تصویرها داخل مرورگر ساخته می‌شوند و جایی فرستاده نمی‌شوند.</span>
+  </footer>
+</div>
+
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var $$ = function (s) { return Array.prototype.slice.call(document.querySelectorAll(s)); };
+
+  /* ================= data ================= */
+  var FONTS = [
+    { n: 'Vazirmatn', l: 'وزیرمتن', fa: 1, w: 800 },
+    { n: 'Lalezar', l: 'لاله‌زار', fa: 1, w: 400 },
+    { n: 'Reem Kufi', l: 'ریم کوفی', fa: 1, w: 700 },
+    { n: 'Orbitron', l: 'Orbitron', w: 900 },
+    { n: 'Russo One', l: 'Russo One', w: 400 },
+    { n: 'Bungee', l: 'Bungee', w: 400 },
+    { n: 'Audiowide', l: 'Audiowide', w: 400 },
+    { n: 'Black Ops One', l: 'Black Ops One', w: 400 },
+    { n: 'Rajdhani', l: 'Rajdhani', w: 700 },
+    { n: 'Press Start 2P', l: 'Press Start 2P', w: 400 }
+  ];
+  var PRESETS = [
+    { l: 'بنفش نئونی', c1: '#7c5cff', c2: '#ff4d8d', bg: '#0c0e17' },
+    { l: 'سبز ماتریکس', c1: '#22e07a', c2: '#0fb5a8', bg: '#06110c' },
+    { l: 'آتش', c1: '#ff6a2b', c2: '#ffc233', bg: '#140b08' },
+    { l: 'یخی', c1: '#3dd6ff', c2: '#7c8bff', bg: '#08101a' },
+    { l: 'خونین', c1: '#ff2e4d', c2: '#ff7a59', bg: '#12070b' },
+    { l: 'طلای سلطنتی', c1: '#f5c542', c2: '#c98a2b', bg: '#100d07' }
+  ];
+  var TPLS = [
+    { id: 'neon', l: 'نئون سایبر', font: 'Orbitron', c1: '#7c5cff', c2: '#ff4d8d', bg: '#0c0e17', text: '#ffffff', pattern: 'grid', shape: 'hex', emblem: 'shield', icon: 'bolt', nm: 'Night Wolf', tg: 'Competitive Player', id2: '@nightwolf' },
+    { id: 'matrix', l: 'ماتریکس', font: 'Russo One', c1: '#22e07a', c2: '#0fb5a8', bg: '#06110c', text: '#eafff3', pattern: 'scan', shape: 'rsq', emblem: 'hex', icon: 'crosshair', nm: 'Viper', tg: 'Sniper Main', id2: '@viper_x' },
+    { id: 'fire', l: 'آتش‌فشان', font: 'Bungee', c1: '#ff6a2b', c2: '#ffc233', bg: '#140b08', text: '#fff6ea', pattern: 'stripes', shape: 'circle', emblem: 'badge', icon: 'sword', nm: 'Blaze', tg: 'Clutch or Kick', id2: '@blaze.gg' },
+    { id: 'arctic', l: 'قطب‌شمال', font: 'Audiowide', c1: '#3dd6ff', c2: '#7c8bff', bg: '#08101a', text: '#f2fbff', pattern: 'hex', shape: 'hex', emblem: 'diamond', icon: 'gem', nm: 'Ice Queen', tg: 'Streamer', id2: '@icequeen' },
+    { id: 'royal', l: 'طلای سلطنتی', font: 'Lalezar', c1: '#f5c542', c2: '#c98a2b', bg: '#100d07', text: '#fff7de', pattern: 'dots', shape: 'circle', emblem: 'shield', icon: 'crown', nm: 'شیر جنگل', tg: 'گیمر حرفه‌ای', id2: '@shirjangal' },
+    { id: 'blood', l: 'خون و آهن', font: 'Black Ops One', c1: '#ff2e4d', c2: '#ff7a59', bg: '#12070b', text: '#ffffff', pattern: 'stripes', shape: 'hex', emblem: 'badge', icon: 'skull', nm: 'Reaper', tg: 'Ranked Grinder', id2: '@reaper' },
+    { id: 'retro', l: 'رترو آرکید', font: 'Press Start 2P', c1: '#ff4fd8', c2: '#3df5ff', bg: '#0a0620', text: '#ffffff', pattern: 'grid', shape: 'rsq', emblem: 'diamond', icon: 'star', nm: 'PIXEL', tg: 'Retro Arcade', id2: '@pixelking' },
+    { id: 'shadow', l: 'سایه', font: 'Rajdhani', c1: '#e6e9ff', c2: '#7b84b8', bg: '#0a0b10', text: '#ffffff', pattern: 'none', shape: 'circle', emblem: 'circle', icon: 'letter', nm: 'Shadow', tg: 'Silent Player', id2: '@shadow' }
+  ];
+  var SIZES = { profile: { W: 1080, H: 1080 }, yt: { W: 2560, H: 1440 }, tg: { W: 1280, H: 720 }, x: { W: 1500, H: 500 } };
+  var STYLE_KEYS = ['font', 'c1', 'c2', 'bg', 'text', 'pattern', 'shape', 'emblem', 'icon'];
+
+  var S = {
+    mode: 'profile', name: 'Night Wolf', id: '@nightwolf', tag: 'Competitive Player',
+    font: 'Orbitron', c1: '#7c5cff', c2: '#ff4d8d', bg: '#0c0e17', text: '#ffffff',
+    pattern: 'grid', shape: 'hex', layout: 'tr', size: 'yt', glow: true, img: null,
+    emblem: 'shield', icon: 'bolt', llay: 'stack', transparent: false, fmt: 'png', tpl: 'neon'
+  };
+
+  /* ================= helpers ================= */
+  function isFa(t) { return /[؀-ۿ]/.test(t); }
+  function rgba(h, a) {
+    var n = parseInt(h.slice(1), 16);
+    return 'rgba(' + ((n >> 16) & 255) + ',' + ((n >> 8) & 255) + ',' + (n & 255) + ',' + a + ')';
+  }
+  function fstr(px, w, name) { return w + ' ' + px + 'px "' + name + '","Vazirmatn",Tahoma,sans-serif'; }
+  function fontOf(name) { for (var i = 0; i < FONTS.length; i++) if (FONTS[i].n === name) return FONTS[i]; return FONTS[0]; }
+  function curFont() { return fontOf(S.font); }
+  function dims() {
+    if (S.mode === 'profile') return SIZES.profile;
+    if (S.mode === 'logo') return S.llay === 'row' ? { W: 1600, H: 640 } : { W: 1080, H: 1080 };
+    return SIZES[S.size];
+  }
+
+  function drawFit(ctx, text, x, y, align, maxW, startPx, w, name, fill, spacingEm) {
+    if (!text) return;
+    ctx.save();
+    ctx.textAlign = align;
+    ctx.textBaseline = 'middle';
+    var fa = isFa(text);
+    ctx.direction = fa ? 'rtl' : 'ltr';
+    var px = startPx;
+    function setup() {
+      ctx.font = fstr(px, w, name);
+      if ('letterSpacing' in ctx) ctx.letterSpacing = fa ? '0px' : (px * (spacingEm || 0)) + 'px';
+    }
+    setup();
+    var m = ctx.measureText(text).width;
+    if (m > maxW) { px = Math.max(8, Math.floor(px * maxW / m)); setup(); }
+    ctx.fillStyle = fill;
+    ctx.fillText(text, x, y);
+    ctx.restore();
+  }
+
+  function drawPill(ctx, text, x, y, align, h, maxW) {
+    if (!text) return;
+    ctx.save();
+    ctx.textBaseline = 'middle';
+    ctx.direction = isFa(text) ? 'rtl' : 'ltr';
+    if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+    var px = h * 0.5;
+    ctx.font = fstr(px, 600, 'Vazirmatn');
+    var tw = ctx.measureText(text).width;
+    var pad = h * 0.9;
+    if (tw + pad > maxW) { px = Math.max(8, Math.floor(px * (maxW - pad) / tw)); ctx.font = fstr(px, 600, 'Vazirmatn'); tw = ctx.measureText(text).width; }
+    var w = tw + pad;
+    var left = align === 'center' ? x - w / 2 : (align === 'right' ? x - w : x);
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(left, y - h / 2, w, h, h / 2); else ctx.rect(left, y - h / 2, w, h);
+    ctx.fillStyle = rgba(S.c1, 0.16);
+    ctx.fill();
+    ctx.lineWidth = Math.max(2, h * 0.06);
+    ctx.strokeStyle = S.c1;
+    ctx.stroke();
+    ctx.textAlign = 'center';
+    ctx.fillStyle = S.text;
+    ctx.fillText(text, left + w / 2, y + h * 0.03);
+    ctx.restore();
+  }
+
+  /* ================= background ================= */
+  function hexPath(ctx, cx, cy, r) {
+    ctx.beginPath();
+    for (var i = 0; i < 6; i++) {
+      var a = -Math.PI / 2 + i * Math.PI / 3;
+      var px = cx + r * Math.cos(a), py = cy + r * Math.sin(a);
+      if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+    }
+    ctx.closePath();
+  }
+
+  function pattern(ctx, W, H) {
+    var u = Math.min(W, H) / 16, x, y;
+    ctx.save();
+    if (S.pattern === 'grid') {
+      ctx.strokeStyle = rgba(S.c1, 0.16); ctx.lineWidth = Math.max(1, u * 0.03);
+      ctx.beginPath();
+      for (x = 0; x <= W; x += u) { ctx.moveTo(x, 0); ctx.lineTo(x, H); }
+      for (y = 0; y <= H; y += u) { ctx.moveTo(0, y); ctx.lineTo(W, y); }
+      ctx.stroke();
+    } else if (S.pattern === 'stripes') {
+      ctx.strokeStyle = rgba(S.c1, 0.14); ctx.lineWidth = u * 0.18;
+      ctx.beginPath();
+      for (x = -H; x < W + H; x += u * 0.8) { ctx.moveTo(x, H); ctx.lineTo(x + H, 0); }
+      ctx.stroke();
+    } else if (S.pattern === 'dots') {
+      ctx.fillStyle = rgba(S.c1, 0.3);
+      for (y = u / 2; y < H; y += u * 0.7) for (x = u / 2; x < W; x += u * 0.7) { ctx.beginPath(); ctx.arc(x, y, u * 0.045, 0, Math.PI * 2); ctx.fill(); }
+    } else if (S.pattern === 'scan') {
+      ctx.fillStyle = 'rgba(0,0,0,0.25)';
+      for (y = 0; y < H; y += u * 0.16) ctx.fillRect(0, y, W, u * 0.06);
+    } else if (S.pattern === 'hex') {
+      var r = u * 0.9, w = Math.sqrt(3) * r, row = 0;
+      ctx.strokeStyle = rgba(S.c1, 0.2); ctx.lineWidth = Math.max(1, u * 0.03);
+      for (y = 0; y < H + r; y += r * 1.5, row++)
+        for (x = (row % 2 ? w / 2 : 0); x < W + w; x += w) { hexPath(ctx, x, y, r); ctx.stroke(); }
+    }
+    ctx.restore();
+  }
+
+  function background(ctx, W, H) {
+    var R = Math.max(W, H), g;
+    ctx.fillStyle = S.bg; ctx.fillRect(0, 0, W, H);
+    g = ctx.createRadialGradient(W * 0.15, H * 0.15, 0, W * 0.15, H * 0.15, R * 0.7);
+    g.addColorStop(0, rgba(S.c1, 0.4)); g.addColorStop(1, rgba(S.c1, 0));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    g = ctx.createRadialGradient(W * 0.9, H * 0.95, 0, W * 0.9, H * 0.95, R * 0.65);
+    g.addColorStop(0, rgba(S.c2, 0.32)); g.addColorStop(1, rgba(S.c2, 0));
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+    pattern(ctx, W, H);
+    g = ctx.createRadialGradient(W / 2, H / 2, Math.min(W, H) * 0.3, W / 2, H / 2, R * 0.75);
+    g.addColorStop(0, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,0.5)');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  }
+
+  /* ================= avatar frame ================= */
+  function shapePath(ctx, shape, cx, cy, r) {
+    ctx.beginPath();
+    if (shape === 'circle') ctx.arc(cx, cy, r, 0, Math.PI * 2);
+    else if (shape === 'hex') {
+      var rr = r * 1.08;
+      for (var i = 0; i < 6; i++) {
+        var a = -Math.PI / 2 + i * Math.PI / 3;
+        var px = cx + rr * Math.cos(a), py = cy + rr * Math.sin(a);
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath();
+    } else {
+      var s = r * 0.92;
+      if (ctx.roundRect) ctx.roundRect(cx - s, cy - s, s * 2, s * 2, r * 0.3); else ctx.rect(cx - s, cy - s, s * 2, s * 2);
+    }
+  }
+
+  function drawFrame(ctx, cx, cy, r) {
+    var lw = r * 0.07, g;
+    ctx.save();
+    if (S.glow) { ctx.shadowColor = rgba(S.c1, 0.9); ctx.shadowBlur = r * 0.35; }
+    shapePath(ctx, S.shape, cx, cy, r);
+    ctx.fillStyle = S.bg; ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    shapePath(ctx, S.shape, cx, cy, r - lw / 2);
+    ctx.clip();
+    g = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+    g.addColorStop(0, rgba(S.c1, 0.35)); g.addColorStop(1, rgba(S.c2, 0.35));
+    ctx.fillStyle = g; ctx.fillRect(cx - r * 1.2, cy - r * 1.2, r * 2.4, r * 2.4);
+    if (S.img) {
+      var iw = S.img.naturalWidth, ih = S.img.naturalHeight;
+      var sc = Math.max(2 * r / iw, 2 * r / ih);
+      ctx.drawImage(S.img, cx - iw * sc / 2, cy - ih * sc / 2, iw * sc, ih * sc);
+    } else {
+      var ch = (Array.from((S.name || '').trim())[0] || '?').toUpperCase();
+      var f = curFont();
+      var lg = ctx.createLinearGradient(cx, cy - r * 0.6, cx, cy + r * 0.6);
+      lg.addColorStop(0, S.text); lg.addColorStop(1, S.c2);
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.direction = isFa(ch) ? 'rtl' : 'ltr';
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+      ctx.font = fstr(Math.round(r * 1.05), f.w, f.n);
+      ctx.fillStyle = lg;
+      ctx.fillText(ch, cx, cy + r * 0.05);
+    }
+    ctx.restore();
+
+    g = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+    g.addColorStop(0, S.c1); g.addColorStop(1, S.c2);
+    shapePath(ctx, S.shape, cx, cy, r - lw / 2);
+    ctx.lineWidth = lw; ctx.lineJoin = 'round'; ctx.strokeStyle = g; ctx.stroke();
+    shapePath(ctx, S.shape, cx, cy, r + lw * 1.6);
+    ctx.lineWidth = lw * 0.25; ctx.strokeStyle = rgba(S.c2, 0.6); ctx.stroke();
+  }
+
+  /* ================= logo emblem ================= */
+  function emblemPath(ctx, kind, cx, cy, r) {
+    var i, a;
+    ctx.beginPath();
+    if (kind === 'circle') { ctx.arc(cx, cy, r, 0, Math.PI * 2); return; }
+    if (kind === 'hex') { hexPath(ctx, cx, cy, r * 1.05); return; }
+    if (kind === 'diamond') {
+      ctx.moveTo(cx, cy - r); ctx.lineTo(cx + r * 0.9, cy); ctx.lineTo(cx, cy + r); ctx.lineTo(cx - r * 0.9, cy); ctx.closePath(); return;
+    }
+    if (kind === 'badge') {
+      for (i = 0; i < 8; i++) {
+        a = Math.PI / 8 + i * Math.PI / 4;
+        var px = cx + r * Math.cos(a) * 1.04, py = cy + r * Math.sin(a) * 1.04;
+        if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+      }
+      ctx.closePath(); return;
+    }
+    ctx.moveTo(cx, cy - r);
+    ctx.lineTo(cx + r * 0.9, cy - r * 0.72);
+    ctx.lineTo(cx + r * 0.9, cy + r * 0.05);
+    ctx.quadraticCurveTo(cx + r * 0.9, cy + r * 0.62, cx, cy + r);
+    ctx.quadraticCurveTo(cx - r * 0.9, cy + r * 0.62, cx - r * 0.9, cy + r * 0.05);
+    ctx.lineTo(cx - r * 0.9, cy - r * 0.72);
+    ctx.closePath();
+  }
+
+  function poly(ctx, pts) {
+    ctx.beginPath();
+    for (var i = 0; i < pts.length; i++) { if (i === 0) ctx.moveTo(pts[i][0], pts[i][1]); else ctx.lineTo(pts[i][0], pts[i][1]); }
+    ctx.closePath();
+  }
+
+  function drawIcon(ctx, kind, cx, cy, s, fill, cut) {
+    var i;
+    ctx.save();
+    ctx.translate(cx, cy); ctx.scale(s, s);
+    ctx.fillStyle = fill; ctx.strokeStyle = fill; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+    if (kind === 'bolt') {
+      poly(ctx, [[0.15, -1], [-0.55, 0.1], [-0.05, 0.1], [-0.2, 1], [0.55, -0.2], [0.05, -0.2]]); ctx.fill();
+    } else if (kind === 'crown') {
+      poly(ctx, [[-0.9, 0.6], [-0.9, -0.5], [-0.4, 0], [0, -0.8], [0.4, 0], [0.9, -0.5], [0.9, 0.6]]); ctx.fill();
+      ctx.fillRect(-0.9, 0.72, 1.8, 0.24);
+    } else if (kind === 'crosshair') {
+      ctx.lineWidth = 0.13;
+      ctx.beginPath(); ctx.arc(0, 0, 0.58, 0, Math.PI * 2); ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(0, -1); ctx.lineTo(0, -0.3); ctx.moveTo(0, 1); ctx.lineTo(0, 0.3);
+      ctx.moveTo(-1, 0); ctx.lineTo(-0.3, 0); ctx.moveTo(1, 0); ctx.lineTo(0.3, 0);
+      ctx.stroke();
+      ctx.beginPath(); ctx.arc(0, 0, 0.1, 0, Math.PI * 2); ctx.fill();
+    } else if (kind === 'skull') {
+      ctx.beginPath(); ctx.arc(0, -0.2, 0.72, 0, Math.PI * 2); ctx.fill();
+      ctx.beginPath(); if (ctx.roundRect) ctx.roundRect(-0.42, 0.25, 0.84, 0.64, 0.12); else ctx.rect(-0.42, 0.25, 0.84, 0.64); ctx.fill();
+      ctx.fillStyle = cut; ctx.strokeStyle = cut;
+      ctx.beginPath(); ctx.arc(-0.29, -0.18, 0.2, 0, Math.PI * 2); ctx.arc(0.29, -0.18, 0.2, 0, Math.PI * 2); ctx.fill();
+      poly(ctx, [[0, 0.1], [-0.1, 0.3], [0.1, 0.3]]); ctx.fill();
+      ctx.lineWidth = 0.06;
+      ctx.beginPath(); ctx.moveTo(-0.15, 0.58); ctx.lineTo(-0.15, 0.89); ctx.moveTo(0.15, 0.58); ctx.lineTo(0.15, 0.89); ctx.moveTo(0, 0.58); ctx.lineTo(0, 0.89); ctx.stroke();
+    } else if (kind === 'star') {
+      var pts = [];
+      for (i = 0; i < 10; i++) { var a = -Math.PI / 2 + i * Math.PI / 5, rr = i % 2 ? 0.42 : 1; pts.push([rr * Math.cos(a), rr * Math.sin(a)]); }
+      poly(ctx, pts); ctx.fill();
+    } else if (kind === 'sword') {
+      poly(ctx, [[0, -1], [0.15, 0.36], [-0.15, 0.36]]); ctx.fill();
+      ctx.fillRect(-0.5, 0.36, 1, 0.14);
+      ctx.fillRect(-0.07, 0.5, 0.14, 0.34);
+      ctx.beginPath(); ctx.arc(0, 0.93, 0.1, 0, Math.PI * 2); ctx.fill();
+    } else if (kind === 'gem') {
+      poly(ctx, [[-0.8, -0.35], [-0.4, -0.9], [0.4, -0.9], [0.8, -0.35], [0, 0.95]]); ctx.fill();
+      ctx.strokeStyle = cut; ctx.lineWidth = 0.05;
+      ctx.beginPath();
+      ctx.moveTo(-0.8, -0.35); ctx.lineTo(0.8, -0.35);
+      ctx.moveTo(-0.4, -0.9); ctx.lineTo(-0.2, -0.35); ctx.lineTo(0, 0.95);
+      ctx.moveTo(0.4, -0.9); ctx.lineTo(0.2, -0.35); ctx.lineTo(0, 0.95);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawEmblem(ctx, cx, cy, r) {
+    var lw = r * 0.07, g, f = curFont();
+    ctx.save();
+    if (S.glow) { ctx.shadowColor = rgba(S.c1, 0.9); ctx.shadowBlur = r * 0.3; }
+    emblemPath(ctx, S.emblem, cx, cy, r);
+    ctx.fillStyle = S.bg; ctx.fill();
+    ctx.restore();
+
+    ctx.save();
+    emblemPath(ctx, S.emblem, cx, cy, r - lw / 2);
+    ctx.clip();
+    g = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+    g.addColorStop(0, rgba(S.c1, 0.45)); g.addColorStop(1, rgba(S.c2, 0.45));
+    ctx.fillStyle = g; ctx.fillRect(cx - r * 1.2, cy - r * 1.2, r * 2.4, r * 2.4);
+    g = ctx.createLinearGradient(cx, cy - r, cx, cy + r);
+    g.addColorStop(0, 'rgba(255,255,255,0.18)'); g.addColorStop(0.5, 'rgba(255,255,255,0)');
+    ctx.fillStyle = g; ctx.fillRect(cx - r * 1.2, cy - r * 1.2, r * 2.4, r * 2.4);
+    ctx.restore();
+
+    g = ctx.createLinearGradient(cx - r, cy - r, cx + r, cy + r);
+    g.addColorStop(0, S.c1); g.addColorStop(1, S.c2);
+    emblemPath(ctx, S.emblem, cx, cy, r - lw / 2);
+    ctx.lineWidth = lw; ctx.lineJoin = 'round'; ctx.strokeStyle = g; ctx.stroke();
+    emblemPath(ctx, S.emblem, cx, cy, r * 0.8);
+    ctx.lineWidth = Math.max(1, r * 0.02); ctx.strokeStyle = rgba(S.text, 0.25); ctx.stroke();
+
+    var lg = ctx.createLinearGradient(cx, cy - r * 0.5, cx, cy + r * 0.5);
+    lg.addColorStop(0, S.text); lg.addColorStop(1, S.c1);
+    var dy = S.emblem === 'shield' ? -r * 0.03 : 0;
+    if (S.icon === 'letter') {
+      var ch = (Array.from((S.name || '').trim())[0] || '?').toUpperCase();
+      ctx.save();
+      ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+      ctx.direction = isFa(ch) ? 'rtl' : 'ltr';
+      if ('letterSpacing' in ctx) ctx.letterSpacing = '0px';
+      ctx.font = fstr(Math.round(r * 1.0), f.w, f.n);
+      ctx.fillStyle = lg;
+      ctx.fillText(ch, cx, cy + dy + r * 0.05);
+      ctx.restore();
+    } else {
+      drawIcon(ctx, S.icon, cx, cy + dy, r * 0.46, lg, S.bg);
+    }
+  }
+
+  /* ================= layouts ================= */
+  function nameGlow(ctx, blur) { if (S.glow) { ctx.shadowColor = rgba(S.c1, 0.85); ctx.shadowBlur = blur; } }
+
+  function renderProfile(ctx, W, H) {
+    var f = curFont();
+    background(ctx, W, H);
+    drawFrame(ctx, W / 2, H * 0.37, W * 0.25);
+    ctx.save(); nameGlow(ctx, W * 0.03);
+    drawFit(ctx, S.name, W / 2, H * 0.70, 'center', W * 0.84, W * 0.115, f.w, f.n, S.text, 0.03);
+    ctx.restore();
+    drawFit(ctx, S.tag, W / 2, H * 0.78, 'center', W * 0.8, W * 0.036, 600, 'Vazirmatn', rgba(S.text, 0.72), 0.06);
+    drawPill(ctx, S.id, W / 2, H * 0.885, 'center', H * 0.075, W * 0.8);
+  }
+
+  function renderBanner(ctx, W, H) {
+    var f = curFont();
+    background(ctx, W, H);
+    ctx.save();
+    ctx.fillStyle = rgba(S.c1, 0.12);
+    ctx.beginPath(); ctx.moveTo(W * 0.52, 0); ctx.lineTo(W * 0.66, 0); ctx.lineTo(W * 0.46, H); ctx.lineTo(W * 0.32, H); ctx.closePath(); ctx.fill();
+    ctx.fillStyle = rgba(S.c2, 0.1);
+    ctx.beginPath(); ctx.moveTo(W * 0.68, 0); ctx.lineTo(W * 0.72, 0); ctx.lineTo(W * 0.52, H); ctx.lineTo(W * 0.48, H); ctx.closePath(); ctx.fill();
+    ctx.restore();
+
+    var m = H * 0.12, r = H * 0.3, align, ax, fx = null, maxW;
+    if (S.layout === 'tr') { align = 'right'; ax = W - m; fx = m + r * 1.1; maxW = (W - m) - (fx + r * 1.3 + H * 0.06); }
+    else if (S.layout === 'tl') { align = 'left'; ax = m; fx = W - m - r * 1.1; maxW = (fx - r * 1.3 - H * 0.06) - m; }
+    else { align = 'center'; ax = W / 2; maxW = W - m * 2; }
+    if (fx !== null) drawFrame(ctx, fx, H / 2, r);
+
+    drawFit(ctx, S.tag, ax, H * 0.29, align, maxW, H * 0.055, 600, 'Vazirmatn', rgba(S.text, 0.72), 0.08);
+    ctx.save(); nameGlow(ctx, H * 0.035);
+    drawFit(ctx, S.name, ax, H * 0.5, align, maxW, H * 0.21, f.w, f.n, S.text, 0.03);
+    ctx.restore();
+    drawPill(ctx, S.id, ax, H * 0.73, align, H * 0.1, maxW);
+  }
+
+  function renderLogo(ctx, W, H) {
+    var f = curFont();
+    if (S.transparent) ctx.clearRect(0, 0, W, H); else background(ctx, W, H);
+    if (S.llay === 'emblem') {
+      drawEmblem(ctx, W / 2, H / 2, W * 0.4);
+    } else if (S.llay === 'row') {
+      var fa = isFa(S.name), r = H * 0.36, m = H * 0.12;
+      var ex = fa ? W - m - r : m + r;
+      drawEmblem(ctx, ex, H / 2, r);
+      var tx = fa ? ex - r - H * 0.1 : ex + r + H * 0.1;
+      var al = fa ? 'right' : 'left';
+      var maxW = fa ? tx - m : W - m - tx;
+      ctx.save(); nameGlow(ctx, H * 0.04);
+      drawFit(ctx, S.name, tx, S.tag ? H * 0.45 : H * 0.5, al, maxW, H * 0.24, f.w, f.n, S.text, 0.03);
+      ctx.restore();
+      drawFit(ctx, S.tag, tx, H * 0.66, al, maxW, H * 0.075, 600, 'Vazirmatn', rgba(S.text, 0.72), 0.08);
+    } else {
+      drawEmblem(ctx, W / 2, H * 0.4, W * 0.27);
+      ctx.save(); nameGlow(ctx, W * 0.03);
+      drawFit(ctx, S.name, W / 2, H * 0.77, 'center', W * 0.86, W * 0.115, f.w, f.n, S.text, 0.03);
+      ctx.restore();
+      drawFit(ctx, S.tag, W / 2, H * 0.88, 'center', W * 0.8, W * 0.036, 600, 'Vazirmatn', rgba(S.text, 0.72), 0.08);
+    }
+  }
+
+  function render(ctx, W, H) {
+    if (S.mode === 'profile') renderProfile(ctx, W, H);
+    else if (S.mode === 'logo') renderLogo(ctx, W, H);
+    else renderBanner(ctx, W, H);
+  }
+
+  function renderWith(st, ctx, W, H) {
+    var prev = S; S = st;
+    try { render(ctx, W, H); } finally { S = prev; }
+  }
+
+  function drawOn(cv, st, d, tw) {
+    var th = Math.round(tw * d.H / d.W);
+    if (cv.width !== tw || cv.height !== th) { cv.width = tw; cv.height = th; }
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(tw / d.W, 0, 0, tw / d.W, 0, 0);
+    ctx.clearRect(0, 0, d.W, d.H);
+    renderWith(st, ctx, d.W, d.H);
+  }
+
+  /* ================= fonts ================= */
+  var loaded = {};
+  function ensureFont(f) {
+    if (loaded[f.n]) return Promise.resolve();
+    if (!document.fonts || !document.fonts.load) return Promise.resolve();
+    var jobs = [document.fonts.load(f.w + ' 48px "' + f.n + '"', f.fa ? 'گیمر Aa' : 'Aa'), document.fonts.load('800 48px "Vazirmatn"', 'گیمر')];
+    return Promise.all(jobs).then(function () { loaded[f.n] = true; }).catch(function () {});
+  }
+  function ensureAllFonts() { return Promise.all(FONTS.map(ensureFont)); }
+
+  /* ================= studio painting ================= */
+  var cv = $('#cv');
+  function paint() {
+    var d = dims(), pv = Math.min(1, 1000 / d.W);
+    cv.width = Math.round(d.W * pv);
+    cv.height = Math.round(d.H * pv);
+    var ctx = cv.getContext('2d');
+    ctx.setTransform(pv, 0, 0, pv, 0, 0);
+    ctx.clearRect(0, 0, d.W, d.H);
+    render(ctx, d.W, d.H);
+  }
+  var queued = false;
+  function schedule() {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(function () {
+      queued = false;
+      if (view !== 'studio') return;
+      paint();
+      scheduleThumbs();
+      var f = curFont();
+      if (!loaded[f.n]) ensureFont(f).then(function () { paint(); });
+    });
+  }
+
+  /* ================= templates ================= */
+  function tplState(t, mode, extra) {
+    var st = Object.assign({}, S, { mode: mode, size: 'tg', glow: true, transparent: false, img: S.img });
+    STYLE_KEYS.forEach(function (k) { st[k] = t[k]; });
+    return Object.assign(st, extra || {});
+  }
+  var thumbQueued = false;
+  function scheduleThumbs() {
+    if (thumbQueued) return;
+    thumbQueued = true;
+    setTimeout(function () { thumbQueued = false; paintStudioThumbs(); }, 120);
+  }
+  function paintStudioThumbs() {
+    var d = S.mode === 'banner' ? SIZES.tg : { W: 1080, H: 1080 };
+    var tw = S.mode === 'banner' ? 420 : 300;
+    $$('#studio-tpls canvas').forEach(function (c, i) {
+      drawOn(c, tplState(TPLS[i], S.mode, { layout: S.layout, llay: S.llay === 'row' ? 'stack' : S.llay }), d, tw);
+    });
+    $$('#studio-tpls .tbtn').forEach(function (b, i) { b.setAttribute('aria-pressed', TPLS[i].id === S.tpl ? 'true' : 'false'); });
+  }
+  function buildTplGrid(box, mode, onPick, demo) {
+    TPLS.forEach(function (t, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'tbtn'; b.setAttribute('aria-pressed', 'false');
+      var c = document.createElement('canvas');
+      c.setAttribute('aria-hidden', 'true');
+      var s = document.createElement('span'); s.textContent = t.l;
+      b.appendChild(c); b.appendChild(s);
+      b.addEventListener('click', function () { onPick(i); });
+      box.appendChild(b);
+    });
+  }
+  function applyTemplate(t) {
+    STYLE_KEYS.forEach(function (k) { S[k] = t[k]; });
+    S.glow = true; S.tpl = t.id;
+    syncUI();
+    schedule();
+  }
+
+  /* ================= UI sync ================= */
+  function syncUI() {
+    $('#c-1').value = S.c1; $('#c-2').value = S.c2; $('#c-bg').value = S.bg; $('#c-text').value = S.text;
+    $('#f-glow').checked = S.glow; $('#f-transp').checked = S.transparent;
+    $$('input[type="radio"]').forEach(function (r) { r.checked = String(S[r.name]) === r.value; });
+    $$('#fonts .fontbtn').forEach(function (b) { b.setAttribute('aria-pressed', b.dataset.font === S.font ? 'true' : 'false'); });
+    var idx = -1;
+    PRESETS.forEach(function (p, i) { if (p.c1 === S.c1 && p.c2 === S.c2 && p.bg === S.bg) idx = i; });
+    $$('#presets .swatch').forEach(function (b, i) { b.setAttribute('aria-pressed', i === idx ? 'true' : 'false'); });
+    updateModeUI();
+  }
+
+  function updateModeUI() {
+    $$('[data-modes]').forEach(function (el) { el.hidden = el.dataset.modes.split(' ').indexOf(S.mode) < 0; });
+    var d = dims();
+    var wrap = $('#wrap');
+    wrap.dataset.wide = d.W / d.H > 1.2 ? '1' : '0';
+    wrap.classList.toggle('checker', S.mode === 'logo' && S.transparent);
+    var label = S.fmt === 'jpeg' ? 'JPG' : S.fmt.toUpperCase();
+    $('#dl').textContent = 'دانلود تصویر (' + label + ' · ' + d.W + '×' + d.H + ')';
+  }
+
+  function buildFonts() {
+    var box = $('#fonts');
+    FONTS.forEach(function (f) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'fontbtn'; b.dataset.font = f.n;
+      b.setAttribute('aria-pressed', f.n === S.font ? 'true' : 'false');
+      var s = document.createElement('span'); s.className = 'sample'; s.style.fontFamily = '"' + f.n + '","Vazirmatn",sans-serif'; s.style.fontWeight = f.w;
+      s.textContent = f.fa ? 'گیمر Aa' : 'GAMER';
+      var n = document.createElement('span'); n.className = 'fname';
+      var a = document.createElement('span'); a.textContent = f.l; n.appendChild(a);
+      if (f.fa) { var t = document.createElement('span'); t.className = 'fa'; t.textContent = 'فارسی'; n.appendChild(t); }
+      b.appendChild(s); b.appendChild(n);
+      b.addEventListener('click', function () {
+        S.font = f.n; S.tpl = '';
+        $$('#fonts .fontbtn').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        schedule();
+      });
+      box.appendChild(b);
+    });
+  }
+
+  function buildPresets() {
+    var box = $('#presets');
+    PRESETS.forEach(function (p, i) {
+      var b = document.createElement('button');
+      b.type = 'button'; b.className = 'swatch';
+      b.title = p.l; b.setAttribute('aria-label', p.l);
+      b.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+      b.style.background = 'linear-gradient(135deg,' + p.c1 + ',' + p.c2 + ')';
+      b.addEventListener('click', function () {
+        S.c1 = p.c1; S.c2 = p.c2; S.bg = p.bg; S.tpl = '';
+        $('#c-1').value = p.c1; $('#c-2').value = p.c2; $('#c-bg').value = p.bg;
+        $$('#presets .swatch').forEach(function (x) { x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+        schedule();
+      });
+      box.appendChild(b);
+    });
+  }
+  function clearPresetMark() { $$('#presets .swatch').forEach(function (x) { x.setAttribute('aria-pressed', 'false'); }); }
+
+  function bindText(id, key) { $(id).addEventListener('input', function (e) { S[key] = e.target.value; schedule(); }); }
+  bindText('#f-name', 'name'); bindText('#f-id', 'id'); bindText('#f-tag', 'tag');
+
+  [['#c-1', 'c1'], ['#c-2', 'c2'], ['#c-bg', 'bg'], ['#c-text', 'text']].forEach(function (p) {
+    $(p[0]).addEventListener('input', function (e) {
+      S[p[1]] = e.target.value; S.tpl = '';
+      if (p[1] !== 'text') clearPresetMark();
+      schedule();
+    });
+  });
+
+  $$('#view-studio input[type="radio"]').forEach(function (r) {
+    r.addEventListener('change', function () {
+      if (!r.checked) return;
+      S[r.name] = r.value;
+      if (['pattern', 'shape', 'emblem', 'icon'].indexOf(r.name) >= 0) S.tpl = '';
+      updateModeUI();
+      schedule();
+    });
+  });
+  $('#f-glow').addEventListener('change', function (e) { S.glow = e.target.checked; schedule(); });
+  $('#f-transp').addEventListener('change', function (e) { S.transparent = e.target.checked; updateModeUI(); schedule(); });
+
+  $('#f-img').addEventListener('change', function (e) {
+    var file = e.target.files && e.target.files[0];
+    if (!file) return;
+    var fr = new FileReader();
+    fr.onload = function () {
+      var im = new Image();
+      im.onload = function () {
+        S.img = im;
+        $('#f-img-clear').hidden = false;
+        $('#img-note').textContent = 'عکس انتخاب شد: ' + file.name;
+        schedule();
+      };
+      im.onerror = function () { $('#img-note').textContent = 'این فایل خوانده نشد. یک عکس PNG یا JPG انتخاب کن.'; };
+      im.src = fr.result;
+    };
+    fr.readAsDataURL(file);
+  });
+  $('#f-img-clear').addEventListener('click', function () {
+    S.img = null; $('#f-img').value = ''; $('#f-img-clear').hidden = true;
+    $('#img-note').textContent = 'بدون عکس، حرف اول اسمت داخل قاب نمایش داده می‌شود.';
+    schedule();
+  });
+
+  /* ================= download ================= */
+  var inViewer = !!(window.claude && window.claude.use);
+  var dlApi = null;
+  var dlReady = inViewer
+    ? window.claude.use('downloads').then(function (x) { dlApi = x; }, function () { dlApi = null; })
+    : Promise.resolve();
+  var statusEl = $('#status');
+  function say(t) { statusEl.textContent = t; }
+  var lastBlob = null, fbUrl = null;
+
+  function slug() {
+    var s = (S.id || S.name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '');
+    return s || 'gaming';
+  }
+  function showFallback(blob) {
+    if (fbUrl) URL.revokeObjectURL(fbUrl);
+    fbUrl = URL.createObjectURL(blob);
+    $('#fbimg').src = fbUrl;
+    $('#fallback').hidden = false;
+    $('#fallback').scrollIntoView({ block: 'center' });
+  }
+  function anchorSave(blob, name) {
+    var u = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = u; a.download = name; a.rel = 'noopener';
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function () { URL.revokeObjectURL(u); }, 8000);
+  }
+  function exportBlob() {
+    var d = dims(), c = document.createElement('canvas');
+    c.width = d.W; c.height = d.H;
+    var ctx = c.getContext('2d');
+    if (S.fmt === 'jpeg') { ctx.fillStyle = S.bg; ctx.fillRect(0, 0, d.W, d.H); }
+    render(ctx, d.W, d.H);
+    var type = 'image/' + S.fmt;
+    return new Promise(function (res) { c.toBlob(res, type, 0.95); }).then(function (b) {
+      if (b && b.type !== type) { S.fmt = 'png'; return new Promise(function (r2) { c.toBlob(r2, 'image/png'); }); }
+      return b;
+    });
+  }
+
+  $('#dl').addEventListener('click', function () {
+    var btn = $('#dl');
+    btn.disabled = true; say('در حال ساخت تصویر…');
+    Promise.all([ensureFont(curFont()), dlReady]).then(function () {
+      return exportBlob();
+    }).then(function (blob) {
+      if (!blob) { say('ساخت تصویر ناموفق بود. دوباره امتحان کن.'); return; }
+      lastBlob = blob;
+      var d = dims();
+      var ext = S.fmt === 'jpeg' ? 'jpg' : S.fmt;
+      var name = slug() + '-' + S.mode + '-' + d.W + 'x' + d.H + '.' + ext;
+      if (dlApi) {
+        return dlApi.save({ filename: name, data: blob }).then(function () {
+          say('تصویر ذخیره شد.');
+        }, function (err) {
+          var code = err && err.code;
+          if (code === 'declined') say('دانلود لغو شد. هر وقت خواستی دوباره بزن.');
+          else if (code === 'rate_limited') say('یک لحظه صبر کن و دوباره امتحان کن.');
+          else { say('دانلود مستقیم در این نمایش فعال نیست. تصویر پایین صفحه آماده ذخیره است.'); showFallback(blob); }
+        });
+      }
+      if (inViewer) {
+        say('دانلود مستقیم در این نمایش فعال نیست. تصویر پایین صفحه آماده ذخیره است.');
+        showFallback(blob);
+        return;
+      }
+      anchorSave(blob, name);
+      say('دانلود شروع شد: ' + name);
+    }).catch(function () { say('مشکلی پیش آمد. دوباره امتحان کن.'); })
+      .then(function () { btn.disabled = false; });
+  });
+
+  $('#manual').addEventListener('click', function () {
+    say('در حال ساخت تصویر…');
+    ensureFont(curFont()).then(exportBlob).then(function (b) {
+      if (!b) { say('ساخت تصویر ناموفق بود.'); return; }
+      showFallback(b); say('تصویر پایین صفحه آماده ذخیره است.');
+    });
+  });
+
+  /* ================= views ================= */
+  var view = 'home';
+  function go(v, noHash) {
+    view = v;
+    $('#view-home').hidden = v !== 'home';
+    $('#view-studio').hidden = v !== 'studio';
+    $('#site').classList.toggle('in-studio', v === 'studio');
+    $('#nav-cta').hidden = v === 'studio';
+    window.scrollTo(0, 0);
+    if (!noHash) { try { if (v === 'studio') location.hash = 'studio'; else history.replaceState(null, '', location.pathname + location.search); } catch (e) {} }
+    if (v === 'studio') { syncUI(); paint(); paintStudioThumbs(); ensureFont(curFont()).then(function () { if (view === 'studio') paint(); }); }
+    else { paintHome(); }
+  }
+  function startStudio(mode, tplIdx) {
+    S.mode = mode;
+    if (typeof tplIdx === 'number') applyTemplate(TPLS[tplIdx]);
+    go('studio');
+  }
+  $$('[data-go]').forEach(function (b) { b.addEventListener('click', function () { go(b.dataset.go); }); });
+  $$('[data-start]').forEach(function (b) { b.addEventListener('click', function () { startStudio(b.dataset.start); }); });
+  $$('[data-scroll]').forEach(function (b) {
+    b.addEventListener('click', function () {
+      var el = document.getElementById(b.dataset.scroll);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+  window.addEventListener('hashchange', function () {
+    var v = location.hash === '#studio' ? 'studio' : 'home';
+    if (v !== view) go(v, true);
+  });
+
+  /* ================= home painting ================= */
+  var DEMO = { layout: 'tr', size: 'tg', llay: 'stack', transparent: false, glow: true, img: null, mode: 'banner' };
+  function demoState(i, mode) {
+    var t = TPLS[((i % TPLS.length) + TPLS.length) % TPLS.length];
+    var st = Object.assign({}, S, DEMO, { mode: mode, name: t.nm, tag: t.tg, id: t.id2 });
+    STYLE_KEYS.forEach(function (k) { st[k] = t[k]; });
+    return st;
+  }
+  function paintDemo(id, i, mode, d, tw) { var c = document.getElementById(id); if (c) drawOn(c, demoState(i, mode), d, tw); }
+  var SQ = { W: 1080, H: 1080 }, WIDE = SIZES.tg;
+  function paintHeroAt(step) {
+    paintDemo('m-banner', step, 'banner', WIDE, 800);
+    paintDemo('m-profile', step + 3, 'profile', SQ, 400);
+    paintDemo('m-logo', step + 5, 'logo', SQ, 400);
+  }
+  function paintHome() {
+    paintHeroAt(heroStep);
+    paintDemo('sv-profile', 1, 'profile', SQ, 360);
+    paintDemo('sv-banner', 3, 'banner', WIDE, 480);
+    paintDemo('sv-logo', 0, 'logo', SQ, 360);
+    ['sv-t1', 'sv-t2', 'sv-t3', 'sv-t4'].forEach(function (id, k) { paintDemo(id, 4 + k, 'banner', WIDE, 240); });
+    $$('#home-tpls canvas').forEach(function (c, i) { drawOn(c, demoState(i, 'banner'), WIDE, 420); });
+  }
+  var heroStep = 0, heroTimer = null;
+  function heroTick() {
+    if (view !== 'home' || document.hidden) return;
+    heroStep++;
+    var cs = [$('#m-banner'), $('#m-profile'), $('#m-logo')];
+    cs.forEach(function (c) { c.classList.add('swap'); });
+    setTimeout(function () {
+      paintHeroAt(heroStep);
+      cs.forEach(function (c) { c.classList.remove('swap'); });
+    }, 260);
+  }
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ================= start ================= */
+  buildFonts(); buildPresets();
+  buildTplGrid($('#studio-tpls'), 'studio', function (i) { applyTemplate(TPLS[i]); });
+  buildTplGrid($('#home-tpls'), 'home', function (i) { startStudio('banner', i); });
+  updateModeUI();
+
+  var startView = location.hash === '#studio' ? 'studio' : 'home';
+  go(startView, true);
+  ensureAllFonts().then(function () {
+    if (view === 'home') paintHome(); else { paint(); paintStudioThumbs(); }
+  });
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { if (view === 'home') paintHome(); else { paint(); paintStudioThumbs(); } });
+  if (!reduce) heroTimer = setInterval(heroTick, 3800);
+})();
+</script>
+</body>
+</html>
