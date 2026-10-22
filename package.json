@@ -1,8 +1,0 @@
-{
-  "name": "gaming-banner-studio",
-  "version": "1.0.0",
-  "description": "ساخت پروفایل، بنر و لوگوی گیمینگ با قالب آماده و دانلود مستقیم",
-  "main": "server.js",
-  "scripts": { "start": "node server.js" },
-  "license": "MIT"
-}
