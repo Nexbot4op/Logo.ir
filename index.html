@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بروزرسانی سایت</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;800&display=swap">
+<style>
+:root {
+  --bg: #f3f6f5;
+  --fg: #12201c;
+  --muted: #5d716b;
+  --accent: #0f9d78;
+  --accent-soft: rgba(15, 157, 120, 0.14);
+  --grid: rgba(18, 32, 28, 0.06);
+  --font-body: "Vazirmatn", Tahoma, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0b1210;
+    --fg: #e6f2ee;
+    --muted: #8aa39b;
+    --accent: #2be3a8;
+    --accent-soft: rgba(43, 227, 168, 0.16);
+    --grid: rgba(230, 242, 238, 0.05);
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+  background-color: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  padding-inline: 16px;
+  background-image:
+    linear-gradient(var(--grid) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+main {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+  text-align: center;
+}
+.gear-wrap {
+  position: relative;
+  width: 132px;
+  height: 132px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 1px var(--accent-soft), 0 0 60px var(--accent-soft);
+}
+.gear-wrap::after {
+  content: "";
+  position: absolute;
+  inset: -14px;
+  border-radius: 50%;
+  border: 1px dashed var(--accent);
+  opacity: 0.45;
+  animation: spin 24s linear infinite reverse;
+}
+.gear {
+  width: 76px;
+  height: 76px;
+  color: var(--accent);
+  animation: spin 7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.status {
+  font-size: clamp(1.25rem, 5vw, 1.9rem);
+  font-weight: 600;
+  min-height: 1.6em;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1.2em;
+  background: var(--accent);
+  animation: blink 0.9s steps(1) infinite;
+}
+@keyframes blink { 50% { opacity: 0; } }
+.hint { color: var(--muted); font-size: 0.9rem; max-width: 32ch; line-height: 1.8; margin: 0; }
+@media (prefers-reduced-motion: reduce) {
+  .gear, .gear-wrap::after { animation: none; }
+}
+</style>
+</head>
+<body>
+<main>
+  <div class="gear-wrap" aria-hidden="true">
+    <svg class="gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="12" cy="12" r="3.2"/>
+      <path d="M19.4 15a1.7 1.7 0 0 0 .34 1.87l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.7 1.7 0 0 0-1.87-.34 1.7 1.7 0 0 0-1.03 1.56V21a2 2 0 1 1-4 0v-.09a1.7 1.7 0 0 0-1.11-1.56 1.7 1.7 0 0 0-1.87.34l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.7 1.7 0 0 0 .34-1.87 1.7 1.7 0 0 0-1.56-1.03H3a2 2 0 1 1 0-4h.09a1.7 1.7 0 0 0 1.56-1.11 1.7 1.7 0 0 0-.34-1.87l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.7 1.7 0 0 0 1.87.34h.01A1.7 1.7 0 0 0 10 3.09V3a2 2 0 1 1 4 0v.09a1.7 1.7 0 0 0 1.03 1.56 1.7 1.7 0 0 0 1.87-.34l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.7 1.7 0 0 0-.34 1.87v.01A1.7 1.7 0 0 0 20.91 10H21a2 2 0 1 1 0 4h-.09a1.7 1.7 0 0 0-1.56 1.03Z"/>
+    </svg>
+  </div>
+  <div class="status" role="status" aria-live="polite">
+    <span id="typed">در حال بروزرسانی</span><span class="cursor" aria-hidden="true"></span>
+  </div>
+  <p class="hint">سایت به‌زودی با نسخه جدید برمی‌گردد.</p>
+</main>
+<script>
+(function () {
+  var text = "در حال بروزرسانی";
+  var el = document.getElementById("typed");
+  var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (reduce) { el.textContent = text; return; }
+  var i = 0, deleting = false;
+  function tick() {
+    el.textContent = text.slice(0, i);
+    var delay = deleting ? 55 : 110;
+    if (!deleting && i === text.length) { deleting = true; delay = 1600; }
+    else if (deleting && i === 0) { deleting = false; delay = 500; }
+    else { i += deleting ? -1 : 1; }
+    setTimeout(tick, delay);
+  }
+  tick();
+})();
+</script>
+</body>
+</html>
